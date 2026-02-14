@@ -1,14 +1,29 @@
 import threading
+from dotenv import load_dotenv
+import os
 
 from store_pass import storepass 
 from store_pass import returnAllPasses
 from store_pass import passes
 from store_pass import copyPassword
+from Systeminfo import getMACaddress
 from webcall import webcall
 
 website_online = None
 running = True
+load_dotenv()
 
+
+def twofachecks():
+    check = os.getenv("useMACaddress")
+    if check.lower() == "true":
+        return True
+    else:
+        return False
+def web():
+    global website_online
+    threading.Thread(target=check_website_background, daemon=True).start()
+    website_online = True
 def webcheck():
     return webcall()
 
@@ -68,5 +83,8 @@ def main():
 
 
 if __name__ == "__main__":
-    threading.Thread(target=check_website_background, daemon=True).start()
+    if twofachecks():
+        website_online = True
+    else:
+        web()
     main()
