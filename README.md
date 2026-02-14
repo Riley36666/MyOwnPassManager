@@ -23,9 +23,9 @@ A secure, command-line password manager built with Python that keeps your creden
 ### Installation
 
 1. **Clone the repository**
-   git clone https://github.com/Riley36666/MyOwnPassManager.git
-   cd MyOwnPassManager
+   - git clone https://github.com/Riley36666/MyOwnPassManager.git
+   - cd MyOwnPassManager
 2. **Install dependencies**
-    pip install -r requirements.txt
+    - pip install -r requirements.txt
 3. **Run the script**
-    python main.py
+    - python main.py
