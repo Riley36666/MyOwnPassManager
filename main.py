@@ -2,6 +2,8 @@ import threading
 import time
 from dotenv import load_dotenv
 import os
+import sys
+
 
 from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
 from src.passwordGenerator import create_pass
@@ -30,7 +32,7 @@ def use_mac_check():
 
     current_mac = current_mac.lower().replace("-", ":")
     if allowed_mac == current_mac:
-        print("Using MAC Address 2FA")
+        #print("Using MAC Address 2FA")
         return True
     else:
         #print(f"MAC address does not match (current: {current_mac}, allowed: {allowed_mac})")
@@ -134,9 +136,49 @@ def main():
 
 
 if __name__ == "__main__":
+    # 2FA checks
     if use_mac_check():
         website_online = True
     else:
         wait_for_website_check()
+
     checkPassFile()
-    main()
+
+    if len(sys.argv) == 1:
+        main()
+        sys.exit()
+
+    command = sys.argv[1].lower()
+
+    if command == "add":
+        storingaPass()
+
+    elif command == "list":
+        getallPass()
+
+    elif command == "copy":
+        if len(sys.argv) < 3:
+            print("Usage: passman copy <index>")
+        else:
+            copyPassword(int(sys.argv[2]))
+
+    elif command == "delete":
+        if len(sys.argv) < 3:
+            print("Usage: passman delete <index>")
+        else:
+            deletePassFromFile(int(sys.argv[2]))
+    elif command in ["help", "-h", "--help"]:
+        print("""
+    PassMan CLI Commands:
+    add               Add a new password
+    list              Show all saved passwords
+    copy <index>      Copy password to clipboard
+    delete <index>    Delete a password
+    generate          Generate a random password
+    help              Show this help message
+    """)
+    elif command == "generate":
+        passwordGen()
+
+    else:
+        print(f"Unknown command: {command}")
