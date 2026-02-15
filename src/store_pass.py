@@ -16,6 +16,8 @@ def decryptPass(token: bytes) -> str:
 
 
 def writePasstoFile(encryptedPass: bytes, website: str):
+    from db.connect import add_password
+    add_password(encryptedPass, website)
     with open("passwords/password.txt", "ab") as file:
         file.write(website.encode() + b":" + encryptedPass + b"\n")
 
