@@ -3,11 +3,12 @@ import time
 from dotenv import load_dotenv
 import os
 
-from store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
-from passwordGenerator import create_pass
-from Systeminfo import getMACaddress
-from webcall import webcall
-from checkPasswordFile import check
+from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
+from src.passwordGenerator import create_pass
+from src.Systeminfo import getMACaddress
+from src.webcall import webcall
+from src.checkPasswordFile import check
+
 
 website_online = None
 running = True

@@ -2,3 +2,5 @@ passwords
 salt.bin
 __pycache__
 .env
+dist
+main.spec

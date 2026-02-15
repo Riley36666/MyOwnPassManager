@@ -29,3 +29,5 @@ A secure, command-line password manager built with Python that keeps your creden
     - pip install -r requirements.txt
 3. **Run the script**
     - python main.py
+4. **Optional built into .exe**
+    - python -m PyInstaller --onefile --windowed --icon=images/icon.ico --add-data ".env;." main.py
