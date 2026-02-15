@@ -7,6 +7,7 @@ from store_pass import storepass, returnAllPasses, passes, copyPassword, deleteP
 from passwordGenerator import create_pass
 from Systeminfo import getMACaddress
 from webcall import webcall
+from checkPasswordFile import check
 
 website_online = None
 running = True
@@ -29,6 +30,9 @@ def use_mac_check():
     else:
         #print(f"MAC address does not match (current: {current_mac}, allowed: {allowed_mac})")
         return False
+
+def checkPassFile():
+    check()
 
 
 def passwordGen():
@@ -124,4 +128,5 @@ if __name__ == "__main__":
         website_online = True
     else:
         wait_for_website_check()
+    checkPassFile()
     main()
