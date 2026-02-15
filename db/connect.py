@@ -5,30 +5,39 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+usingDB = os.getenv("useDB")
 
-client = MongoClient(os.getenv("mongodburl"))
-db = client["PasswordManager"]
-passwords = db["Passwords"]
+if usingDB == "true":
+    print("Database will be used")
+    client = MongoClient(os.getenv("mongodburl"))
+    db = client["PasswordManager"]
+    passwords = db["Passwords"]
+else:
+    print("Database won't be used")
+    pass
 
 
 def add_password(website: str, password: bytes) -> bool:
-    try:
-        passwords.insert_one({
-            "Website": website,
-            "Password": password
-        })
-        return True
-    except DuplicateKeyError:
-        return False
+    if usingDB == "true":
+        try:
+            passwords.insert_one({
+                "Website": website,
+                "Password": password
+            })
+            return True
+        except DuplicateKeyError:
+            return False
 
 def get_all_passwords():
-    return list(passwords.find({}, {"_id": 0}))  # exclude MongoDB _id
+    if usingDB == "true":
+        return list(passwords.find({}, {"_id": 0}))  # exclude MongoDB _id
 
 
 def get_password_for_website(website):
-    doc = passwords.find_one({"Website": website}, {"_id": 0})
-    if doc:
-        return decryptPass(doc["Password"])
-    return None
+    if usingDB == "true":
+        doc = passwords.find_one({"Website": website}, {"_id": 0})
+        if doc:
+            return decryptPass(doc["Password"])
+        return None
 
 

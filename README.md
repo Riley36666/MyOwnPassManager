@@ -44,6 +44,7 @@ useMACaddress=true
 MAC_ADDRESS=00:00:00:00:00:00
 WEBAPIURL=https://your-api-endpoint/api/websitecheck
 mongodburl=your-mongodb-connection-string
+useDB=true|false
 ```
 
 Make the CLI work globally run **Setup.bat**
