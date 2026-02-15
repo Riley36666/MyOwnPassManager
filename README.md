@@ -31,3 +31,8 @@ A secure, command-line password manager built with Python that keeps your creden
     - python main.py
 4. **Optional built into .exe**
     - python -m PyInstaller --onefile --windowed --icon=images/icon.ico --add-data ".env;." main.py
+
+
+**Make the password manager work anywhere**
+
+- Run setup.bat
