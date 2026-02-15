@@ -67,9 +67,10 @@ def wait_for_website_check():
     global running
     thread = threading.Thread(target=check_website_background, daemon=True)
     thread.start()
+    print("Checking website status...")
     while website_online is None:
-        print("Checking website status... please wait.")
         time.sleep(0.5)
+
     if website_online is False:
         print("Program failed to find website/website was down")
         thread.join()
@@ -114,9 +115,11 @@ def main():
         print("4. Create a random password")
         print("5. Delete a current saved password")
         print("6. Exit")
-
-        option = int(input())
-
+        try:
+            option = int(input())
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
         if website_online is None:
             wait_for_website_check()
 
