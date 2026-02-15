@@ -20,7 +20,7 @@ def writePasstoFile(encryptedPass: bytes, website: str):
         file.write(website.encode() + b":" + encryptedPass + b"\n")
 
 
-def storepass(password: str, website: str) -> bool:
+def storepass(website: str, password: str) -> bool:
     if not isinstance(password, str) or not password:
         return False
     encrypted = encrypt_pass(password)
