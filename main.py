@@ -5,9 +5,9 @@ import os
 import sys
 
 
-from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
+from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile, deleteAll
 from src.passwordGenerator import create_pass
-from src.Systeminfo import getMACaddress
+from src.System_info import getMACaddress
 from src.webcall import webcall
 from src.checkPasswordFile import check
 
@@ -41,12 +41,16 @@ def use_mac_check():
 def checkPassFile():
     check()
 
+def deleteAllPass():
+    deleteAll()
+    print("All passwords have been cleared.")
+
 
 def passwordGen():
     print("What website is the password for?")
     website = input()
     password = create_pass()
-    if storepass(password, website):
+    if storepass(website, password):
         print("Password successfully stored!")
     else:
         print("Password failed to store.")
@@ -167,6 +171,11 @@ if __name__ == "__main__":
             print("Usage: passman delete <index>")
         else:
             deletePassFromFile(int(sys.argv[2]))
+    elif command == "deleteall":
+        if len(sys.argv) < 2:
+            print("Usage: passman deleteall")
+        else:
+            deleteAllPass()
     elif command in ["help", "-h", "--help"]:
         print("""
     PassMan CLI Commands:

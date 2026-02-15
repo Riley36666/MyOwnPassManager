@@ -20,7 +20,7 @@ def writePasstoFile(encryptedPass: bytes, website: str):
         file.write(website.encode() + b":" + encryptedPass + b"\n")
 
 
-def storepass(password: str, website: str) -> bool:
+def storepass(website: str, password: str) -> bool:
     if not isinstance(password, str) or not password:
         return False
     encrypted = encrypt_pass(password)
@@ -34,13 +34,13 @@ def returnAllPasses():
     print("---------------------------------")
     try:
         with open("passwords/password.txt", "rb") as file:
-            for line in file:
+            for index, line in enumerate(file, start=1):
                 line = line.strip()
                 if not line:
                     continue
                 try:
                     website, encrypted = line.split(b":", 1)
-                    print(f"{website.decode()}")
+                    print(f"{index}. {website.decode()}")
                 except ValueError:
                     print("Invalid line format")
     except FileNotFoundError:
@@ -113,3 +113,8 @@ def deletePassFromFile(index):
         print("Invalid index.")
     except FileNotFoundError:
         print("No passwords stored yet.")
+
+def deleteAll():
+    with open(filepath, "wb") as file:
+        file.write(b"")
+
