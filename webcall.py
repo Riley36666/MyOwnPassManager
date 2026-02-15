@@ -1,8 +1,7 @@
 import requests
 
-url = "https://sideproject229.duckdns.org/api/websitecheck"
 
-def webcall():
+def webcall(url):
     try:
         response = requests.post(url, timeout=2)
         if response.status_code == 200 and response.json().get("success") is True:

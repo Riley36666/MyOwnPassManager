@@ -13,12 +13,16 @@ website_online = None
 running = True
 load_dotenv()
 
+websiteurl = os.getenv("WEBAPIURL")
 
 def use_mac_check():
     """Return True if MAC-based 2FA is enabled and the MAC matches"""
     allowed_mac = os.getenv("MAC_ADDRESS", "").lower().replace("-", ":")
     current_mac = getMACaddress()
-
+    useMAC = os.getenv("useMACaddress").lower()
+    if useMAC == "false":
+        return False
+    
     if not current_mac:
         print("Could not retrieve MAC address")
         return False
@@ -47,17 +51,22 @@ def check_website_background():
     """Update global website_online with actual status"""
     global website_online
     print("Using Website based 2fa")
-    website_online = webcall()
+    website_online = webcall(websiteurl)
 
 
 def wait_for_website_check():
     """Start background thread and wait until website_online is set"""
     global website_online
+    global running
     thread = threading.Thread(target=check_website_background, daemon=True)
     thread.start()
     while website_online is None:
         print("Checking website status... please wait.")
         time.sleep(0.5)
+    if website_online is False:
+        print("Program failed to find website/website was down")
+        thread.join()
+        running = False
 
 
 def storingaPass():
