@@ -5,7 +5,7 @@ import os
 
 from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
 from src.passwordGenerator import create_pass
-from src.Systeminfo import getMACaddress
+from System_info import getMACaddress
 from src.webcall import webcall
 from src.checkPasswordFile import check
 
