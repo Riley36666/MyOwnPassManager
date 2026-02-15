@@ -1,11 +1,10 @@
 import threading
+import time
 from dotenv import load_dotenv
 import os
 
-from store_pass import storepass 
-from store_pass import returnAllPasses
-from store_pass import passes
-from store_pass import copyPassword
+from store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile
+from passwordGenerator import create_pass
 from Systeminfo import getMACaddress
 from webcall import webcall
 
@@ -14,32 +13,62 @@ running = True
 load_dotenv()
 
 
-def twofachecks():
-    check = os.getenv("useMACaddress")
-    if check.lower() == "true":
+def use_mac_check():
+    """Return True if MAC-based 2FA is enabled and the MAC matches"""
+    allowed_mac = os.getenv("MAC_ADDRESS", "").lower().replace("-", ":")
+    current_mac = getMACaddress()
+
+    if not current_mac:
+        print("Could not retrieve MAC address")
+        return False
+
+    current_mac = current_mac.lower().replace("-", ":")
+    if allowed_mac == current_mac:
+        print("Using MAC Address 2FA")
         return True
     else:
+        #print(f"MAC address does not match (current: {current_mac}, allowed: {allowed_mac})")
         return False
-def web():
+
+
+def passwordGen():
+    print("What website is the password for?")
+    website = input()
+    password = create_pass()
+    if storepass(password, website):
+        print("Password successfully stored!")
+    else:
+        print("Password failed to store.")
+def check_website_background():
+    """Update global website_online with actual status"""
     global website_online
-    threading.Thread(target=check_website_background, daemon=True).start()
-    website_online = True
-def webcheck():
-    return webcall()
+    print("Using Website based 2fa")
+    website_online = webcall()
+
+
+def wait_for_website_check():
+    """Start background thread and wait until website_online is set"""
+    global website_online
+    thread = threading.Thread(target=check_website_background, daemon=True)
+    thread.start()
+    while website_online is None:
+        print("Checking website status... please wait.")
+        time.sleep(0.5)
 
 
 def storingaPass():
     website = input("What is the website for the pass?\n")
     newpass = input("What is the password for the website?\n")
     
-    if storepass(newpass, website) == True:
+    if storepass(newpass, website):
         print("Pass successfully stored")
     else:
         print("Pass failed to be stored")
 
-def check_website_background():
-    global website_online
-    website_online = webcall()
+def deletePass():
+    passes()
+    choice = int(input("Write the number for password to be deleted\n"))
+    deletePassFromFile(choice)
 
 def getIndvidialPass():
     global running
@@ -48,43 +77,51 @@ def getIndvidialPass():
     copyPassword(choice)
     running = False
 
+
 def getallPass():
     global running
     returnAllPasses()
     running = False
-    
+
 
 def main():
     global running
-    print("1. Store new password")
-    print("2. Get all passwords")
-    print("3. Get indivial passwords by websites")
-    print("4. Exit")
 
-    option = int(input())
+    while running:
+        print("\n1. Store new password")
+        print("2. Get all passwords")
+        print("3. Get indivial passwords by websites")
+        print("4. Create a random password")
+        print("5. Delete a current saved password")
+        print("6. Exit")
 
-    if website_online is None:
-        print("Checking website status... please wait.")
-        return
+        option = int(input())
 
-    if website_online:
-        if option == 1:
-            storingaPass()
-        elif option == 2:
-            returnAllPasses()
-        elif option == 3:
-            getIndvidialPass()
-        elif option == 4:
-            running = False
+        if website_online is None:
+            wait_for_website_check()
+
+        if website_online:
+            if option == 1:
+                storingaPass()
+            elif option == 2:
+                returnAllPasses()
+            elif option == 3:
+                getIndvidialPass()
+            elif option == 4:
+                passwordGen()
+            elif option == 5:
+                deletePass()
+            elif option == 6:
+                running = False
+            else:
+                print("Wrong option")
         else:
-            print("Wrong option")
-    else:
-        print("Website is down therefore 2fa isn't complete")
+            print("Website is down therefore 2FA isn't complete")
 
 
 if __name__ == "__main__":
-    if twofachecks():
+    if use_mac_check():
         website_online = True
     else:
-        web()
+        wait_for_website_check()
     main()

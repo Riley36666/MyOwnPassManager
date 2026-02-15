@@ -3,6 +3,7 @@ from master_key import derive_key
 import pyperclip
 import time
 
+filepath = "passwords/password.txt"
 cipher = derive_key("my_master_password")
 
 
@@ -80,6 +81,33 @@ def copyPassword(index: int, clear_after: int = 10):
             time.sleep(clear_after)
             pyperclip.copy("")  
             print("Clipboard cleared")
+
+    except IndexError:
+        print("Invalid index.")
+    except FileNotFoundError:
+        print("No passwords stored yet.")
+
+def deletePassFromFile(index):
+    try:
+        with open(filepath, "rb") as file:
+            lines = file.readlines()
+
+        if index < 1 or index > len(lines):
+            raise IndexError("Invalid index")
+
+        # Remove the selected line
+        del lines[index - 1]
+
+        with open(filepath, "wb") as file:
+            file.writelines(lines)
+
+        return True
+
+    except Exception as e:
+        print(f"Error deleting password: {e}")
+        return False
+
+
 
     except IndexError:
         print("Invalid index.")
