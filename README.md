@@ -2,6 +2,7 @@
 
 A secure, lightweight command-line password manager built with Python.  
 Passwords are encrypted using symmetric encryption and protected by a master authentication system with environment-based access verification.
+**This project is for educational purposes and not intended for production use.**
 
 ---
 

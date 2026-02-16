@@ -8,13 +8,10 @@ load_dotenv()
 usingDB = os.getenv("useDB")
 
 if usingDB == "true":
-    print("Database will be used")
     client = MongoClient(os.getenv("mongodburl"))
     db = client["PasswordManager"]
     passwords = db["Passwords"]
-else:
-    print("Database won't be used")
-    pass
+
 
 
 def add_password(website: str, password: bytes) -> bool:
@@ -30,7 +27,7 @@ def add_password(website: str, password: bytes) -> bool:
 
 def get_all_passwords():
     if usingDB == "true":
-        return list(passwords.find({}, {"_id": 0}))  # exclude MongoDB _id
+        return list(passwords.find({}, {"_id": 0}))  
 
 
 def get_password_for_website(website):
