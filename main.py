@@ -1,30 +1,80 @@
+import sys
+from PyQt5.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QVBoxLayout,
+    QPushButton,
+    QStackedWidget,
+)
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+
+from src.gui import StartScreen, StorePasswordScreen
 from src.logic import startup
-from src.buttonFunctions import *
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
-
-# Initialize checks
-startup()
-
-# Create window with a theme
-app = ttk.Window(themename="superhero")  # Modern dark theme
-app.title("Password Manager")
-app.state('zoomed')
-app.iconphoto(False, ttk.PhotoImage(file=r'C:\Users\riley\Desktop\Python project\images\icon.png'))
+from src.buttonFunctions import (
+    storeButton,
+    allPassButton,
+    genPass,
+    deletePass,
+)
 
 
-frame = ttk.Frame(app, padding=30)
-frame.pack(expand=True)
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        startup()
+
+        self.setWindowTitle("Password Manager")
+        self.setWindowIcon(QIcon(r"C:\Users\riley\Desktop\Python project\images\icon.png"))
+        self.showMaximized()
+
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        layout = QVBoxLayout()
+        layout.setSpacing(15)
+        central_widget.setLayout(layout)
+
+        self.store_btn = QPushButton("Store a New Password")
+        self.store_btn.clicked.connect(lambda: storeButton(self))
+
+        self.all_pass_btn = QPushButton("Display All Passwords")
+        self.all_pass_btn.clicked.connect(lambda: allPassButton(self))
+
+        self.gen_pass_btn = QPushButton("Generate New Password")
+        self.gen_pass_btn.clicked.connect(lambda: genPass(self))
+
+        self.delete_pass_btn = QPushButton("Delete Saved Password")
+        self.delete_pass_btn.clicked.connect(lambda: deletePass(self))
+
+        self.exit_btn = QPushButton("Exit")
+        self.exit_btn.clicked.connect(self.close)
+
+        for btn in [
+            self.store_btn,
+            self.all_pass_btn,
+            self.gen_pass_btn,
+            self.delete_pass_btn,
+            self.exit_btn,
+        ]:
+            btn.setMinimumHeight(50)
+            layout.addWidget(btn)
+
+    def show_start_screen(self):
+        self.setWindowTitle("Password Manager")
+        self.stack.setCurrentWidget(self.start_screen)
+
+    def show_store_screen(self):
+        self.setWindowTitle("Store a Password")
+        self.stack.setCurrentWidget(self.store_screen)
 
 
-storeBtn = ttk.Button(frame, text="Store a New Password", bootstyle=SUCCESS, command=lambda:storeButton(app, frame))
-allPassBtn = ttk.Button(frame, text="Display All Passwords", bootstyle=INFO, command=lambda:allPassButton(app))
-genPassBtn = ttk.Button(frame, text="Generate New Password", bootstyle=WARNING, command=lambda:genPass(app))
-deletePassBtn = ttk.Button(frame, text="Delete Saved Password", bootstyle=DANGER, command=lambda:deletePass(app))
-exitBtn = ttk.Button(frame, text="Exit", bootstyle=SECONDARY, command=app.destroy)
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
 
+    window = MainWindow()
+    window.show()
 
-for btn in [storeBtn, allPassBtn, genPassBtn, deletePassBtn, exitBtn]:
-    btn.pack(fill='x', pady=10, ipady=10)
-
-app.mainloop()
+    sys.exit(app.exec_())
