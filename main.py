@@ -158,8 +158,10 @@ if __name__ == "__main__":
     command = sys.argv[1].lower()
 
     if command == "add":
-        storingaPass()
-
+        if len(sys.argv) == 2:
+            storingaPass()
+        elif len(sys.argv) == 4:
+            storepass(sys.argv[2], sys.argv[3])
     elif command == "list":
         getallPass()
 
@@ -182,12 +184,13 @@ if __name__ == "__main__":
     elif command in ["help", "-h", "--help"]:
         print("""
     PassMan CLI Commands:
-    add               Add a new password
-    list              Show all saved passwords
-    copy <index>      Copy password to clipboard
-    delete <index>    Delete a password
-    generate          Generate a random password
-    help              Show this help message
+    add | <website>  <password> Add a new password
+    list                        Show all saved websites
+    copy <index>                Copy password to clipboard
+    delete <index>              Delete a password
+    generate                    Generate a random password
+    deleteall                    Deletes all saved passwords
+    help                        Show this help message
     """)
     elif command == "generate":
         passwordGen()
