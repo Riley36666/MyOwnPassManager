@@ -5,3 +5,5 @@ __pycache__
 dist
 main.spec
 build
+createDefualt.py
+.pytest_cache

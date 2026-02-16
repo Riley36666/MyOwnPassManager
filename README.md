@@ -1,38 +1,74 @@
 # 🔐 MyOwnPassManager
 
-A secure, command-line password manager built with Python that keeps your credentials encrypted and safe. Features master password protection, encrypted storage, and a unique remote 2FA availability check.
+A secure, lightweight command-line password manager built with Python.  
+Passwords are encrypted using symmetric encryption and protected by a master authentication system with environment-based access verification.
+**This project is for educational purposes and not intended for production use.**
 
-[![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Security](https://img.shields.io/badge/security-encrypted-brightgreen)]()
+---
 
 ## ✨ Features
 
-- **🔒 Master Password Protection** - Single master key to access all your passwords
-- **🛡️ AES Encryption** - All passwords stored securely using Fernet (symmetric encryption)
-- **🌐 Remote 2FA Status** - Unique feature to check service availability before attempting login
-- **💻 Simple CLI Interface** - Easy-to-use command line interface
-- **📦 Lightweight** - Minimal dependencies, runs anywhere Python is installed
+- 🔒 **Master Password Protection** – Secure access control before vault access  
+- 🛡️ **Encrypted Storage (Fernet / AES)** – All credentials are encrypted before storage  
+- 🌐 **Environment-Based Access Verification** – Optional MAC address validation or remote API availability check  
+- 💻 **Command Line Interface** – Fast, minimal, and efficient workflow  
+- 📦 **Lightweight & Portable** – Runs anywhere Python 3.6+ is installed  
+- 🗄️ **MongoDB Support** – Secure database-backed storage  
 
-## 🚀 Quick Start
+---
+## 🏗 Architecture
 
-### Prerequisites
-- Python 3.6 or higher
-- pip (Python package installer)
+The project follows a modular architecture:
 
-### Installation
+- CLI Layer → Handles user input and command routing
+- Core Logic Layer → Encryption, password generation, storage management
+- Persistence Layer → Local file storage or MongoDB backend
+- Security Layer → Master password validation + environment verification
 
-1. **Clone the repository**
-   - git clone https://github.com/Riley36666/MyOwnPassManager.git
-   - cd MyOwnPassManager
-2. **Install dependencies**
-    - pip install -r requirements.txt
-3. **Run the script**
-    - python main.py
-4. **Optional built into .exe**
-    - python -m PyInstaller --onefile --windowed --icon=images/icon.ico --add-data ".env;." main.py
+---
 
+## 🛠 Tech Stack
 
-**Make the password manager work anywhere**
+- Python 3.6+
+- cryptography (Fernet encryption)
+- python-dotenv
+- MongoDB
+- threading
+- requests (for remote availability check)
 
-- Run setup.bat
+---
+
+## 🚀 Installation
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/Riley36666/MyOwnPassManager.git
+cd MyOwnPassManager
+pip install -r requirements.txt
+```
+
+### Create a .env / edit the .env.production
+
+```bash 
+useMACaddress=true
+MAC_ADDRESS=00:00:00:00:00:00
+WEBAPIURL=https://your-api-endpoint/api/websitecheck
+mongodburl=your-mongodb-connection-string
+useDB=true|false
+```
+
+Make the CLI work globally run **Setup.bat**
+
+---
+## 🧪 Testing
+
+The project includes unit tests for:
+- Encryption/decryption integrity
+- Password storage logic
+- Deletion behaviour
+
+Run tests with:
+pytest
+
+---

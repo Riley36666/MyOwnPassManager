@@ -1,21 +1,17 @@
 from cryptography.fernet import Fernet
-from src.master_key import derive_key
+from src.encrypt import encrypt_pass, decryptPass
 import pyperclip
 import time
 
 filepath = "passwords/password.txt"
-cipher = derive_key("my_master_password")
 
 
-def encrypt_pass(password: str) -> bytes:
-    return cipher.encrypt(password.encode())
 
-
-def decryptPass(token: bytes) -> str:
-    return cipher.decrypt(token).decode()
 
 
 def writePasstoFile(encryptedPass: bytes, website: str):
+    from db.connect import add_password
+    add_password(encryptedPass, website)
     with open("passwords/password.txt", "ab") as file:
         file.write(website.encode() + b":" + encryptedPass + b"\n")
 
@@ -34,13 +30,13 @@ def returnAllPasses():
     print("---------------------------------")
     try:
         with open("passwords/password.txt", "rb") as file:
-            for line in file:
+            for index, line in enumerate(file, start=1):
                 line = line.strip()
                 if not line:
                     continue
                 try:
                     website, encrypted = line.split(b":", 1)
-                    print(f"{website.decode()}")
+                    print(f"{index}. {website.decode()}")
                 except ValueError:
                     print("Invalid line format")
     except FileNotFoundError:
@@ -87,29 +83,5 @@ def copyPassword(index: int, clear_after: int = 10):
     except FileNotFoundError:
         print("No passwords stored yet.")
 
-def deletePassFromFile(index):
-    try:
-        with open(filepath, "rb") as file:
-            lines = file.readlines()
-
-        if index < 1 or index > len(lines):
-            raise IndexError("Invalid index")
-
-        # Remove the selected line
-        del lines[index - 1]
-
-        with open(filepath, "wb") as file:
-            file.writelines(lines)
-
-        return True
-
-    except Exception as e:
-        print(f"Error deleting password: {e}")
-        return False
 
 
-
-    except IndexError:
-        print("Invalid index.")
-    except FileNotFoundError:
-        print("No passwords stored yet.")
