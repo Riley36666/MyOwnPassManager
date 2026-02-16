@@ -16,6 +16,16 @@ Passwords are encrypted using symmetric encryption and protected by a master aut
 - 🗄️ **MongoDB Support** – Secure database-backed storage  
 
 ---
+## 🏗 Architecture
+
+The project follows a modular architecture:
+
+- CLI Layer → Handles user input and command routing
+- Core Logic Layer → Encryption, password generation, storage management
+- Persistence Layer → Local file storage or MongoDB backend
+- Security Layer → Master password validation + environment verification
+
+---
 
 ## 🛠 Tech Stack
 
@@ -49,3 +59,16 @@ useDB=true|false
 ```
 
 Make the CLI work globally run **Setup.bat**
+
+---
+## 🧪 Testing
+
+The project includes unit tests for:
+- Encryption/decryption integrity
+- Password storage logic
+- Deletion behaviour
+
+Run tests with:
+pytest
+
+---
