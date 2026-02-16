@@ -11,6 +11,7 @@ from src.System_info import getMACaddress
 from src.webcall import webcall
 from src.checkPasswordFile import check
 from db.connect import get_password_for_website
+from src.deletingPass import deleteAll, deletePassFromFile
 
 website_online = None
 running = True

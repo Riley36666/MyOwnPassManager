@@ -1,18 +1,12 @@
 from cryptography.fernet import Fernet
-from src.master_key import derive_key
+from src.encrypt import encrypt_pass, decryptPass
 import pyperclip
 import time
 
 filepath = "passwords/password.txt"
-cipher = derive_key("my_master_password")
 
 
-def encrypt_pass(password: str) -> bytes:
-    return cipher.encrypt(password.encode())
 
-
-def decryptPass(token: bytes) -> str:
-    return cipher.decrypt(token).decode()
 
 
 def writePasstoFile(encryptedPass: bytes, website: str):
@@ -89,34 +83,5 @@ def copyPassword(index: int, clear_after: int = 10):
     except FileNotFoundError:
         print("No passwords stored yet.")
 
-def deletePassFromFile(index):
-    try:
-        with open(filepath, "rb") as file:
-            lines = file.readlines()
 
-        if index < 1 or index > len(lines):
-            raise IndexError("Invalid index")
-
-        # Remove the selected line
-        del lines[index - 1]
-
-        with open(filepath, "wb") as file:
-            file.writelines(lines)
-
-        return True
-
-    except Exception as e:
-        print(f"Error deleting password: {e}")
-        return False
-
-
-
-    except IndexError:
-        print("Invalid index.")
-    except FileNotFoundError:
-        print("No passwords stored yet.")
-
-def deleteAll():
-    with open(filepath, "wb") as file:
-        file.write(b"")
 
