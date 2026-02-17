@@ -5,11 +5,12 @@ import os
 import sys
 
 
-from src.store_pass import storepass, returnAllPasses, passes, copyPassword, deletePassFromFile, deleteAll
+from src.store_pass import storepass, returnAllPasses, passes, copyPassword
 from src.passwordGenerator import create_pass
 from src.System_info import getMACaddress
+from src.config import changeConfig
 from src.webcall import webcall
-from src.checkPasswordFile import check
+from src.Initalization import checks
 from db.connect import get_password_for_website
 from src.deletingPass import deleteAll, deletePassFromFile
 
@@ -39,8 +40,12 @@ def use_mac_check():
         #print(f"MAC address does not match (current: {current_mac}, allowed: {allowed_mac})")
         return False
 
-def checkPassFile():
-    check()
+def init():
+    checks()
+def reload_config():
+    load_dotenv(override=True)
+    global websiteurl
+    websiteurl = os.getenv("WEBAPIURL")
 
 def deleteAllPass():
     deleteAll()
@@ -115,7 +120,8 @@ def main():
         print("3. Get indivial passwords by websites")
         print("4. Create a random password")
         print("5. Delete a current saved password")
-        print("6. Exit")
+        print("6. Update the config")
+        print("7. Exit")
         try:
             option = int(input())
         except ValueError:
@@ -136,6 +142,9 @@ def main():
             elif option == 5:
                 deletePass()
             elif option == 6:
+                changeConfig()
+                reload_config()
+            elif option == 7:
                 running = False
             else:
                 print("Wrong option")
@@ -150,7 +159,7 @@ if __name__ == "__main__":
     else:
         wait_for_website_check()
 
-    checkPassFile()
+    init()
 
     if len(sys.argv) == 1:
         main()
@@ -182,6 +191,9 @@ if __name__ == "__main__":
             print("Usage: passman deleteall")
         else:
             deleteAllPass()
+    elif command == "config":
+        changeConfig()
+        reload_config()
     elif command in ["help", "-h", "--help"]:
         print("""
     PassMan CLI Commands:
@@ -190,7 +202,8 @@ if __name__ == "__main__":
     copy <index>                Copy password to clipboard
     delete <index>              Delete a password
     generate                    Generate a random password
-    deleteall                    Deletes all saved passwords
+    deleteall                   Deletes all saved passwords
+    config                      Allows you to update the config file
     help                        Show this help message
     """)
     elif command == "generate":
