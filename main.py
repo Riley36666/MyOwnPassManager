@@ -13,12 +13,13 @@ from src.webcall import webcall
 from src.Initalization import checks
 from db.connect import get_password_for_website
 from src.deletingPass import deleteAll, deletePassFromFile
-
+from src.updateCheck import updateChecker
 website_online = None
 running = True
 load_dotenv()
 
 websiteurl = os.getenv("WEBAPIURL")
+
 
 def use_mac_check():
     """Return True if MAC-based 2FA is enabled and the MAC matches"""
@@ -82,6 +83,8 @@ def wait_for_website_check():
         thread.join()
         running = False
 
+def updateCheck():
+    updateChecker()
 
 def storingaPass():
     website = input("What is the website for the pass?\n")
@@ -121,7 +124,8 @@ def main():
         print("4. Create a random password")
         print("5. Delete a current saved password")
         print("6. Update the config")
-        print("7. Exit")
+        print("7. Check for update.")
+        print("8. Exit")
         try:
             option = int(input())
         except ValueError:
@@ -145,6 +149,8 @@ def main():
                 changeConfig()
                 reload_config()
             elif option == 7:
+                updateCheck()
+            elif option == 8:
                 running = False
             else:
                 print("Wrong option")
@@ -191,6 +197,11 @@ if __name__ == "__main__":
             print("Usage: passman deleteall")
         else:
             deleteAllPass()
+    elif command == "updade":
+        if len(sys.argv) < 2:
+            print("Usage: passman update")
+        else:
+            updateCheck()
     elif command == "config":
         changeConfig()
         reload_config()
@@ -204,6 +215,7 @@ if __name__ == "__main__":
     generate                    Generate a random password
     deleteall                   Deletes all saved passwords
     config                      Allows you to update the config file
+    update                      Checks for any updates and updates if needed
     help                        Show this help message
     """)
     elif command == "generate":
