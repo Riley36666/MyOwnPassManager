@@ -197,7 +197,7 @@ if __name__ == "__main__":
             print("Usage: passman deleteall")
         else:
             deleteAllPass()
-    elif command == "updade":
+    elif command == "update":
         if len(sys.argv) < 2:
             print("Usage: passman update")
         else:

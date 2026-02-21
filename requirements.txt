@@ -1,5 +1,6 @@
 requests
 cryptography
-dotenv
-pymongo
+python-dotenv
 pyperclip
+pymongo
+pytest

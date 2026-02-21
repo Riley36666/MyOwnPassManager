@@ -69,6 +69,6 @@ The project includes unit tests for:
 - Deletion behaviour
 
 Run tests with:
-pytest
+python -m pytest
 
 ---
