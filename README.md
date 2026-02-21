@@ -1,8 +1,8 @@
 # 🔐 MyOwnPassManager
 
 A secure, lightweight command-line password manager built with Python.  
-Passwords are encrypted using symmetric encryption and protected by a master authentication system with environment-based access verification.
-**This project is for educational purposes and not intended for production use.**
+Passwords are encrypted using symmetric encryption and protected by a master authentication system with optional environment-based access verification.
+**This project is for educational purposes and not intended for production use. The README was written with the assistance of AI.**
 
 ---
 
@@ -20,10 +20,10 @@ Passwords are encrypted using symmetric encryption and protected by a master aut
 
 The project follows a modular architecture:
 
-- CLI Layer → Handles user input and command routing
-- Core Logic Layer → Encryption, password generation, storage management
-- Persistence Layer → Local file storage or MongoDB backend
-- Security Layer → Master password validation + environment verification
+- **CLI Layer** → Handles user input and command routing  
+- **Core Logic Layer** → Encryption, password generation, storage management  
+- **Persistence Layer** → Local file storage or MongoDB backend  
+- **Security Layer** → Master password validation + environment verification  
 
 ---
 
@@ -48,7 +48,7 @@ cd MyOwnPassManager
 pip install -r requirements.txt
 ```
 
-### Create a .env / edit the .env.production
+### Create a `.env` file (or edit `.env.production` for deployment):
 
 ```bash 
 useMACaddress=true
@@ -58,15 +58,16 @@ mongodburl=your-mongodb-connection-string
 useDB=true|false
 ```
 
-Make the CLI work globally run **Setup.bat**
+> **Note:** `Setup.bat` adds the CLI to PATH (Windows only).
 
 ### Example usages
 
 ```
 passman help
 passman list
-passman copy 
-passman add | passman add (website) (password)
+passman copy <index>
+passman add
+passman add <website> <password>
 passman gen  
 ```
 ---
@@ -76,8 +77,16 @@ The project includes unit tests for:
 - Encryption/decryption integrity
 - Password storage logic
 - Deletion behaviour
+- Update checks
 
 Run tests with:
+```
 python -m pytest
-
+```
 ---
+
+## 🎯 Project Goals
+
+- Learn secure credential handling
+- Practice modular Python design
+- Explore encryption and environment-based security checks
