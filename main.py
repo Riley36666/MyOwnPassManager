@@ -90,7 +90,7 @@ def storingaPass():
     website = input("What is the website for the pass?\n")
     newpass = input("What is the password for the website?\n")
     
-    if storepass(newpass, website):
+    if storepass(website, newpass):
         print("Pass successfully stored")
     else:
         print("Pass failed to be stored")
@@ -197,7 +197,7 @@ if __name__ == "__main__":
             print("Usage: passman deleteall")
         else:
             deleteAllPass()
-    elif command == "updade":
+    elif command == "update":
         if len(sys.argv) < 2:
             print("Usage: passman update")
         else:
