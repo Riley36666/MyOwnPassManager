@@ -218,8 +218,10 @@ if __name__ == "__main__":
     update                      Checks for any updates and updates if needed
     help                        Show this help message
     """)
-    elif command == "generate":
+    elif command == "generate" or command == "gen":
         passwordGen()
+    elif command == "test":
+        print("Password manager is successfully loaded and usable")
 
     else:
         print(f"Unknown command: {command}")

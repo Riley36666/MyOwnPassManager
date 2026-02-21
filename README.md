@@ -60,6 +60,15 @@ useDB=true|false
 
 Make the CLI work globally run **Setup.bat**
 
+### Example usages
+
+```
+passman help
+passman list
+passman copy 
+passman add | passman add (website) (password)
+passman gen  
+```
 ---
 ## 🧪 Testing
 
