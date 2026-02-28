@@ -23,9 +23,9 @@ websiteurl = os.getenv("WEBAPIURL")
 
 def use_mac_check():
     """Return True if MAC-based 2FA is enabled and the MAC matches"""
-    allowed_mac = os.getenv("MAC_ADDRESS", "").lower().replace("-", ":")
+    allowed_mac = os.getenv("MAC_ADDRESS", "").replace("-", ":")
     current_mac = getMACaddress()
-    useMAC = os.getenv("useMACaddress").lower()
+    useMAC = os.getenv("useMACaddress")
     if useMAC == "false":
         return False
     
