@@ -14,6 +14,7 @@ from src.Initalization import checks
 from db.connect import get_password_for_website
 from src.deletingPass import deleteAll, deletePassFromFile
 from src.updateCheck import updateChecker
+from src.firsttime import first_time_setup, validate_env
 website_online = None
 running = True
 load_dotenv()
@@ -159,6 +160,14 @@ def main():
 
 
 if __name__ == "__main__":
+    load_dotenv()
+
+    first_time_setup()
+
+    if not validate_env():
+        print("Configuration invalid. Please update config.")
+        sys.exit()
+
     # 2FA checks
     if use_mac_check():
         website_online = True
@@ -166,7 +175,6 @@ if __name__ == "__main__":
         wait_for_website_check()
 
     init()
-
     if len(sys.argv) == 1:
         main()
         sys.exit()

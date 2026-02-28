@@ -2,16 +2,19 @@ import requests
 
 
 def webcall(url):
-    try:
-        response = requests.post(url, timeout=2)
-        if response.status_code == 200 and response.json().get("success") is True:
-            return True
+    if url == "None":
+        return False
+    else:
+        try:
+            response = requests.post(url, timeout=2)
+            if response.status_code == 200 and response.json().get("success") is True:
+                return True
 
-        else:
-            return False
+            else:
+                return False
 
-    except requests.exceptions.RequestException as e:
-        print("ERROR:", e)
-        return None 
+        except requests.exceptions.RequestException as e:
+            print("ERROR:", e)
+            return None 
 
 

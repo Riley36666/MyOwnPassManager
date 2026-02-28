@@ -30,13 +30,16 @@ def changeConfig():
         mac = getMACaddress()
         set_env_var("useMACaddress", "true")
         set_env_var("MAC_ADDRESS", mac)
-        set_env_var("WEBAPIURL", "")
+        set_env_var("WEBAPIURL", "None")
+        set_env_var("useDB", "false")
+        set_env_var("mongodburl", "")
     else:
-        print("What is the API URL?")
+        print("What is the API URL? # broken atm")
         weburl = input().strip()
         set_env_var("useMACaddress", "false")
         set_env_var("WEBAPIURL", weburl)
         set_env_var("MAC_ADDRESS", "")
-
+        set_env_var("useDB", "false")
+        set_env_var("mongodburl", "")
     print("Config updated.")
     
